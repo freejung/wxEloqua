@@ -1,6 +1,6 @@
 <?php
 define('MODX_API_MODE', true);
-require_once '/mnt/stor9-wc1-dfw1/627233/dev.dealerwebinars.com/web/content/index.php';
+require_once '/mnt/stor9-wc1-dfw1/627233/www.kpaonline.com/web/content/index.php';
 
 if (!($modx instanceof modX)) exit();
 
@@ -16,11 +16,11 @@ $webinarFieldMapping = '{
 
 $modx->runSnippet('eloquaCloudConnector', array(
 	'instance' => 0,
-	'debug' => 1, 
+	'debug' => 0, 
 	'dateTimes' => '["C_Current_Webinar_Date_Time1"]',
 	'webinarProvider' => 'GoToWebinar',
-	'webinarContext' => 'web',
-	'calendarId' => 12,
+	'webinarContext' => 'dealerwebinars',
+	'calendarId' => 1925,
 	'cloudConnectorActions' =>'{
 		"regStep" : {
 			"pushfieldsets" : [],
@@ -97,15 +97,8 @@ $modx->runSnippet('eloquaCloudConnector', array(
 			"checkattendance" : 1,
 			"pushfieldsets" : [{
 				"entitytype" : {
-					"id" : 0, 
-					"name" : "Contact",
-					"type" : "Base"
-				},
-				"pushfields" : '.$webinarFieldMapping.'
-			},{
-				"entitytype" : {
-					"id" : 19, 
-					"name" : "Attendance" , 
+					"id" : 21, 
+					"name" : "Webinar Registration" , 
 					"type" : "DataCardSet"
 				},
 				"codeField": "Code1",
@@ -119,7 +112,8 @@ $modx->runSnippet('eloquaCloudConnector', array(
 					"Questions1" : {"source" : "provider", "key" : "questions"},
 					"Surveys1" : {"source" : "provider", "key" : "polls"},
 					"CMS_ID1" : {"source" : "provider", "key" : "id"},
-					"GTW_Meeting_ID1" : {"source" : "provider", "key" : "ses.webinarKey"}
+					"GTW_Meeting_ID1" : {"source" : "provider", "key" : "ses.webinarKey"},
+					"Product_Family1" : {"source" : "presentation", "key" : "grandparent"}
 				}
 			}],
 			"pullfieldsets" : [],

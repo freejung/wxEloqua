@@ -73,6 +73,7 @@ foreach ($presentations as $presentation) {
     $presentationArray = $presentation->toFullArray();
     $presentationArray['calendarurl'] = $modx->makeUrl($calendarId, $webinarContext, array('ps' => $presentationArray['id']), 'http');
     $presentationArray['landingpageurl'] = $modx->makeUrl($presentationArray['wbn.id'], $webinarContext, '', 'http');
+    if($grandparent = $presentation->getOne('Grandparent')) $presentationArray['grandparent'] = $grandparent->get('pagetitle');
     $modx->log(modX::LOG_LEVEL_DEBUG, 'Elq Instance '.$instance.' :processing presentation id= '.$presentation->get('id').'');
     if(!is_array($regArray['steps'])) {
         $modx->log(modX::LOG_LEVEL_DEBUG, 'Elq Instance '.$instance.' :this presentation has no Cloud Connector steps configured.');

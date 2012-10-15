@@ -143,7 +143,6 @@ class wxEloqua {
     */
     
     public function setEntityFields($entityType, $fields = array(), $dateTimeFields = array(), $codeField = '') {
-        $this->modx->log(modX::LOG_LEVEL_DEBUG, 'Elq instance '.$this->config['instance'].' :'.'setting entity fields: '.print_r($fields,true));
         $memberFieldsArray = array();
         if(!empty($this->members)){
             # If one of the fields is a date/time field, get the state for all members
@@ -156,6 +155,8 @@ class wxEloqua {
                  foreach ($returnedContacts as $key => $dynamicEntity) {
                     $memberStates[$dynamicEntity->Id] = $dynamicEntity->FieldValueCollection->getDynamicEntityField('C_State_Prov');
                     $email = $dynamicEntity->FieldValueCollection->getDynamicEntityField('C_EmailAddress');
+                    if ($email) $email = strtolower($email);
+                    $this->modx->log(modX::LOG_LEVEL_DEBUG, 'Elq instance '.$this->config['instance'].' :'.'member email: '.$email);
                     if(!empty($fields[$email])) {
                         $memberFieldsArray[$dynamicEntity->Id] = $fields[$email];
                     }else{
@@ -172,6 +173,7 @@ class wxEloqua {
                 $id = $member->EntityId;
                 $entityId = $id;
                 $memberFields = $memberFieldsArray[$id];
+                //$this->modx->log(modX::LOG_LEVEL_DEBUG, 'Elq instance '.$this->config['instance'].' :'.'member fields: '.print_r($memberFields, true));
                 $defaultFields = $fields['default'];
                 $dynamicEntityFields = new DynamicEntityFields();
                 foreach($defaultFields as $key => $value) {
@@ -189,7 +191,10 @@ class wxEloqua {
                 }
                 if($entityType->Type == 'DataCardSet') {
                 	$code = $dynamicEntityFields->getDynamicEntityField($codeField);
-                	if(empty($code)) continue;
+                	if(empty($code)) {
+                		$failedContactIds[] = $id;
+                		continue;
+                	}
                     $dynamicEntityFields->setDynamicEntityField('MappedEntityID', $id);
                     $dynamicEntityFields->setDynamicEntityField('MappedEntityTypeID', 0);
                     $entityId = NULL;
@@ -246,7 +251,7 @@ class wxEloqua {
      * @param array $fields array of Eloqua field names to fetch values of
     */
     public function getContactData($fields = array()) {
-        $this->modx->log(modX::LOG_LEVEL_ERROR, 'Elq instance '.$this->config['instance'].' :'.'getting contact data');
+        $this->modx->log(modX::LOG_LEVEL_DEBUG, 'Elq instance '.$this->config['instance'].' :'.'getting contact data');
         if(!empty($this->members)){
             # Retrieve the contact fields for each member and store them in an array indexed by email address
             #Create Request Object for Retreive Entity
