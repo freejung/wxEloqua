@@ -12,6 +12,7 @@ class Email {
 	public $Subject = null;
 	
 	function __construct(array $config = array()) {
+		$this->config = $config;
 		if(!empty($config['Id'])) $this->Id = $config['Id'];
 		if(!empty($config['Name'])) $this->Id = $config['Name'];
 		if(!empty($config['Subject'])) $this->Id = $config['Subject'];
@@ -39,6 +40,7 @@ class EmailDetails extends Email {
 	public $Tracked = 1;
 	
 	function __construct(array $config = array()) {
+		$this->config = $config;
 		parent :: __construct($config);
 		if(!empty($config['AutoGenerateTextContent'])) $this->AutoGenerateTextContent = $config['AutoGenerateTextContent'];
 		if(!empty($config['BouncebackAddress'])) $this->BouncebackAddress = $config['BouncebackAddress'];
@@ -80,6 +82,7 @@ class DeploymentSettings {
 	public $SignatureRuleId = null;
 	
 	function __construct(array $config = array()) {
+		$this->config = $config;
 		if(!empty($config['AllowResend'])) $this->AllowResend = $config['AllowResend'];
 		if(!empty($config['AllowSendToBouncebacked'])) $this->AllowSendToBouncebacked = $config['AllowSendToBouncebacked'];
 		if(!empty($config['AllowSendToEmailGroupUnsubscribed'])) $this->AllowSendToEmailGroupUnsubscribed = $config['AllowSendToEmailGroupUnsubscribed'];
